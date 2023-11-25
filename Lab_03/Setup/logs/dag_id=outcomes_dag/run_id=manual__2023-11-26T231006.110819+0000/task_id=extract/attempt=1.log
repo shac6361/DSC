@@ -1,0 +1,82 @@
+[2023-11-26T23:10:07.796+0000] {logging_mixin.py:154} INFO - Changing /opt/***/logs/dag_id=outcomes_dag/run_id=manual__2023-11-26T23:10:06.110819+00:00/task_id=extract permission to 509
+[2023-11-26T23:10:07.826+0000] {logging_mixin.py:154} INFO - Changing /opt/***/logs/dag_id=outcomes_dag/run_id=manual__2023-11-26T23:10:06.110819+00:00/task_id=extract permission to 509
+[2023-11-26T23:10:08.043+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: outcomes_dag.extract manual__2023-11-26T23:10:06.110819+00:00 [queued]>
+[2023-11-26T23:10:08.054+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: outcomes_dag.extract manual__2023-11-26T23:10:06.110819+00:00 [queued]>
+[2023-11-26T23:10:08.055+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 1
+[2023-11-26T23:10:08.071+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): extract> on 2023-11-26 23:10:06.110819+00:00
+[2023-11-26T23:10:08.080+0000] {standard_task_runner.py:57} INFO - Started process 189 to run task
+[2023-11-26T23:10:08.084+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'outcomes_dag', 'extract', 'manual__2023-11-26T23:10:06.110819+00:00', '--job-id', '29', '--raw', '--subdir', 'DAGS_FOLDER/outcomes_dag.py', '--cfg-path', '/tmp/tmpn33ctw6o']
+[2023-11-26T23:10:08.086+0000] {standard_task_runner.py:85} INFO - Job 29: Subtask extract
+[2023-11-26T23:10:08.132+0000] {logging_mixin.py:154} INFO - Changing /opt/***/logs/dag_id=outcomes_dag/run_id=manual__2023-11-26T23:10:06.110819+00:00/task_id=extract permission to 509
+[2023-11-26T23:10:08.135+0000] {task_command.py:416} INFO - Running <TaskInstance: outcomes_dag.extract manual__2023-11-26T23:10:06.110819+00:00 [running]> on host 613ffde293d8
+[2023-11-26T23:10:08.212+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='outcomes_dag' AIRFLOW_CTX_TASK_ID='extract' AIRFLOW_CTX_EXECUTION_DATE='2023-11-26T23:10:06.110819+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2023-11-26T23:10:06.110819+00:00'
+[2023-11-26T23:10:15.911+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/cloud/storage/blob.py", line 2604, in _prep_and_do_upload
+    created_json = self._do_upload(
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/cloud/storage/blob.py", line 2427, in _do_upload
+    response = self._do_resumable_upload(
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/cloud/storage/blob.py", line 2245, in _do_resumable_upload
+    upload, transport = self._initiate_resumable_upload(
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/cloud/storage/blob.py", line 2119, in _initiate_resumable_upload
+    upload.initiate(
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/resumable_media/requests/upload.py", line 420, in initiate
+    return _request_helpers.wait_and_retry(
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/resumable_media/requests/_request_helpers.py", line 155, in wait_and_retry
+    response = func()
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/resumable_media/requests/upload.py", line 416, in retriable_request
+    self._process_initiate_response(result)
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/resumable_media/_upload.py", line 518, in _process_initiate_response
+    _helpers.require_status_code(
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/resumable_media/_helpers.py", line 108, in require_status_code
+    raise common.InvalidResponse(
+google.resumable_media.common.InvalidResponse: ('Request failed with status code', 404, 'Expected one of', 200, 201)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 192, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 209, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/etl_scripts/pipeline.py", line 126, in extract_data
+    upload_df_to_gcs(data, gcs_bucket, "outcomes.parquet",credentials=creds)
+  File "/opt/airflow/dags/etl_scripts/pipeline.py", line 38, in upload_df_to_gcs
+    blob.upload_from_file(parquet_buffer, content_type='application/octet-stream')
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/cloud/storage/blob.py", line 2763, in upload_from_file
+    self._prep_and_do_upload(
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/cloud/storage/blob.py", line 2622, in _prep_and_do_upload
+    _raise_from_invalid_response(exc)
+  File "/home/airflow/.local/lib/python3.8/site-packages/google/cloud/storage/blob.py", line 4778, in _raise_from_invalid_response
+    raise exceptions.from_http_status(response.status_code, message, response=response)
+google.api_core.exceptions.NotFound: 404 POST https://storage.googleapis.com/upload/storage/v1/b/raw-outcomes/o?uploadType=resumable: {
+  "error": {
+    "code": 404,
+    "message": "The specified bucket does not exist.",
+    "errors": [
+      {
+        "message": "The specified bucket does not exist.",
+        "domain": "global",
+        "reason": "notFound"
+      }
+    ]
+  }
+}
+: ('Request failed with status code', 404, 'Expected one of', <HTTPStatus.OK: 200>, <HTTPStatus.CREATED: 201>)
+[2023-11-26T23:10:15.926+0000] {taskinstance.py:1400} INFO - Marking task as FAILED. dag_id=outcomes_dag, task_id=extract, execution_date=20231126T231006, start_date=20231126T231008, end_date=20231126T231015
+[2023-11-26T23:10:15.939+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 29 for task extract (404 POST https://storage.googleapis.com/upload/storage/v1/b/raw-outcomes/o?uploadType=resumable: {
+  "error": {
+    "code": 404,
+    "message": "The specified bucket does not exist.",
+    "errors": [
+      {
+        "message": "The specified bucket does not exist.",
+        "domain": "global",
+        "reason": "notFound"
+      }
+    ]
+  }
+}
+: ('Request failed with status code', 404, 'Expected one of', <HTTPStatus.OK: 200>, <HTTPStatus.CREATED: 201>); 189)
+[2023-11-26T23:10:15.971+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2023-11-26T23:10:16.038+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check
